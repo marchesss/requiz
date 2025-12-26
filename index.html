@@ -211,15 +211,7 @@ function finishQuiz(){
   quizFinished=true;
   finishBtn.disabled=true;
 
-  let finalScore = 0;
-let quizFinished = false;
-
-function finishQuiz() {
-  quizFinished = true;
-  finalScore = score; // <-- ВАЖНО
-  generateCertificate(nick, finalScore);
-}
-
+  let score=0;
 
   questions.forEach((q,i)=>{
     document.querySelectorAll(`input[name=q${i}]`).forEach(o=>{
@@ -236,58 +228,41 @@ function finishQuiz() {
   generateCertificate(nick,score);
 }
 
-function generateCertificate(nick, finalScore) {
-  const canvas = document.getElementById("certificateCanvas");
-  const ctx = canvas.getContext("2d");
+function generateCertificate(nick,score){
+  const canvas=certificate;
+  const ctx=canvas.getContext("2d");
+  const img=new Image();
+  certID=crypto.randomUUID();
+  img.src="images/certificate.png";
 
-  const img = new Image();
-  img.src = "images/certificate.png";
+  img.onload=()=>{
+    canvas.width=img.width;
+    canvas.height=img.height;
+    ctx.drawImage(img,0,0);
 
-  img.onload = () => {
-    // 1️⃣ сначала фон
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle="#6b21a8";
 
-    // 2️⃣ имя
-    ctx.fillStyle = "#2b2b2b";
-    ctx.font = "bold 48px Inter";
-    ctx.textAlign = "center";
-    ctx.fillText(nick, canvas.width / 2, 420);
+    // 1 — NAME
+    ctx.textAlign="center";
+    ctx.font="bold 64px Inter";
+    ctx.fillText(nick,canvas.width/2,520);
 
-    // 3️⃣ ID + дата
-    const date = new Date().toLocaleDateString("en-GB");
-    const certId = `RE-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    // 2 — SCORE
+    ctx.textAlign="right";
+    ctx.font="bold 64px Inter";
+    ctx.fillText(score,canvas.width-220,1030);
+    ctx.font="32px Inter";
+    ctx.fillText("/ 10",canvas.width-140,1030);
 
-    ctx.font = "20px Inter";
-    ctx.textAlign = "left";
+    // 3 — ID + DATE
+    ctx.textAlign="left";
+    ctx.font="26px monospace";
     ctx.fillText(
-      `CERTIFICATE ID: ${certId} • ${date}`,
-      140,
-      1040
-    );
-
-    // 4️⃣ 🔥 ФИНАЛЬНЫЙ СЧЁТ (ГЛАВНОЕ)
-    ctx.textAlign = "right";
-    ctx.fillStyle = "#7c3aed";
-
-    // число правильных ответов
-    ctx.font = "bold 72px Inter";
-    ctx.fillText(
-      finalScore,
-      canvas.width - 240,
-      1040
-    );
-
-    // /10
-    ctx.font = "42px Inter";
-    ctx.fillText(
-      "/10",
-      canvas.width - 160,
-      1040
+      `Certificate ID: ${certID} • ${new Date().toLocaleDateString()}`,
+      220,1030
     );
   };
 }
-
 
 function downloadCert(){
   const a=document.createElement("a");
