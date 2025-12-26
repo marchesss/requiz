@@ -258,14 +258,29 @@ function generateCertificate(nick, score) {
     );
 
     /* =========================
-       2️⃣ SCORE — X /10
-    ========================= */
-    ctx.textAlign = "right";
-    ctx.font = "bold 64px Inter";
-    ctx.fillText(
-      score,
-      canvas.width - 245,
-      1040
+   SCORE — результат квиза
+   (X /10)
+========================= */
+
+const totalQuestions = 10; // если поменяешь кол-во — тут тоже
+
+ctx.textAlign = "right";
+ctx.fillStyle = "#7c3aed"; // фиолетовый как в дизайне
+ctx.font = "bold 72px Inter";
+
+// число правильных ответов
+ctx.fillText(
+  score,
+  canvas.width - 245,
+  1040
+);
+
+// "/10"
+ctx.font = "42px Inter";
+ctx.fillText(
+  `/${totalQuestions}`,
+  canvas.width - 165,
+  1040
     );
 
     ctx.font = "36px Inter";
