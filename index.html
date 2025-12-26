@@ -202,29 +202,53 @@ function generateCertificate(nick, score) {
   const canvas = document.getElementById("certificate");
   const ctx = canvas.getContext("2d");
   const img = new Image();
+
   certID = crypto.randomUUID();
   img.src = "images/certificate.png";
 
   img.onload = () => {
     canvas.width = img.width;
     canvas.height = img.height;
-    ctx.drawImage(img,0,0);
 
-    ctx.fillStyle = "#a855f7";
+    ctx.drawImage(img, 0, 0);
+
     ctx.textAlign = "center";
+    ctx.fillStyle = "#6b21a8";
 
-    ctx.font = "bold 72px Inter";
-    ctx.fillText(nick, canvas.width/2, 600);
+    /* ===== 1. NAME ===== */
+    ctx.font = "bold 64px Inter";
+    ctx.fillText(
+      nick,
+      canvas.width / 2,
+      520   // ← зона цифры 1
+    );
 
-    ctx.font = "40px Inter";
-    ctx.fillText("(re)quiz", canvas.width/2, 690);
-    ctx.fillText(`Score: ${score}/10`, canvas.width/2, 760);
+    /* ===== 2. SCORE ===== */
+    ctx.font = "bold 64px Inter";
+    ctx.textAlign = "right";
+    ctx.fillText(
+      `${score}`,
+      canvas.width - 220, // ← зона цифры 2
+      1030
+    );
 
-    ctx.font = "28px monospace";
-    ctx.fillText(`ID: ${certID}`, canvas.width/2, 830);
+    ctx.font = "32px Inter";
+    ctx.fillText(
+      `/ 10`,
+      canvas.width - 140,
+      1030
+    );
 
-    ctx.font = "30px Inter";
-    ctx.fillText(new Date().toLocaleDateString(), canvas.width/2, 900);
+    /* ===== 3. ID + DATE ===== */
+    ctx.textAlign = "left";
+    ctx.font = "26px monospace";
+
+    const date = new Date().toLocaleDateString();
+    ctx.fillText(
+      `Certificate ID: ${certID} • ${date}`,
+      220,  // ← зона цифры 3
+      1030
+    );
   };
 }
 
