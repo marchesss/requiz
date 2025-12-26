@@ -233,7 +233,7 @@ function generateCertificate(nick, score) {
   const ctx = canvas.getContext("2d");
   const img = new Image();
 
-  // короткий ID (8 символов)
+  // короткий ID + дата
   const shortID = crypto.randomUUID().split("-")[0].toUpperCase();
   const date = new Date().toLocaleDateString();
 
@@ -247,46 +247,49 @@ function generateCertificate(nick, score) {
     ctx.fillStyle = "#6b21a8";
 
     /* =========================
-       1️⃣ NAME (над пунктиром)
+       1️⃣ NAME — над пунктиром
     ========================= */
     ctx.textAlign = "center";
     ctx.font = "bold 58px Inter";
     ctx.fillText(
       nick,
       canvas.width / 2,
-      515   // точка НАД пунктирной линией
+      510
     );
 
     /* =========================
-       2️⃣ SCORE (X /10)
+       2️⃣ SCORE — X /10
     ========================= */
     ctx.textAlign = "right";
     ctx.font = "bold 64px Inter";
     ctx.fillText(
       score,
-      canvas.width - 250,
-      1035
+      canvas.width - 245,
+      1040
     );
 
     ctx.font = "36px Inter";
     ctx.fillText(
       "/10",
-      canvas.width - 170,
-      1035
+      canvas.width - 165,
+      1040
     );
 
     /* =========================
-       3️⃣ CERT ID + DATE
+       3️⃣ CERTIFICATE ID + DATE
+       👉 СРАЗУ ПОСЛЕ "CERTIFICATE ID:"
     ========================= */
     ctx.textAlign = "left";
     ctx.font = "26px monospace";
+
     ctx.fillText(
       `${shortID} • ${date}`,
-      390,   // сразу после "Certificate ID:"
-      1035
+      470,   // 🔥 КЛЮЧЕВО: начало текста сразу после двоеточия
+      1040
     );
   };
 }
+
 
 function downloadCert(){
   const a=document.createElement("a");
