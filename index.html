@@ -228,38 +228,62 @@ function finishQuiz(){
   generateCertificate(nick,score);
 }
 
-function generateCertificate(nick,score){
-  const canvas=certificate;
-  const ctx=canvas.getContext("2d");
-  const img=new Image();
-  certID=crypto.randomUUID();
-  img.src="images/certificate.png";
+function generateCertificate(nick, score) {
+  const canvas = document.getElementById("certificate");
+  const ctx = canvas.getContext("2d");
+  const img = new Image();
 
-  img.onload=()=>{
-    canvas.width=img.width;
-    canvas.height=img.height;
-    ctx.drawImage(img,0,0);
+  // короткий ID (8 символов)
+  const shortID = crypto.randomUUID().split("-")[0].toUpperCase();
+  const date = new Date().toLocaleDateString();
 
-    ctx.fillStyle="#6b21a8";
+  img.src = "images/certificate.png";
 
-    // 1 — NAME
-    ctx.textAlign="center";
-    ctx.font="bold 64px Inter";
-    ctx.fillText(nick,canvas.width/2,520);
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
 
-    // 2 — SCORE
-    ctx.textAlign="right";
-    ctx.font="bold 64px Inter";
-    ctx.fillText(score,canvas.width-220,1030);
-    ctx.font="32px Inter";
-    ctx.fillText("/ 10",canvas.width-140,1030);
+    ctx.drawImage(img, 0, 0);
+    ctx.fillStyle = "#6b21a8";
 
-    // 3 — ID + DATE
-    ctx.textAlign="left";
-    ctx.font="26px monospace";
+    /* =========================
+       1️⃣ NAME (над пунктиром)
+    ========================= */
+    ctx.textAlign = "center";
+    ctx.font = "bold 58px Inter";
     ctx.fillText(
-      `Certificate ID: ${certID} • ${new Date().toLocaleDateString()}`,
-      220,1030
+      nick,
+      canvas.width / 2,
+      515   // точка НАД пунктирной линией
+    );
+
+    /* =========================
+       2️⃣ SCORE (X /10)
+    ========================= */
+    ctx.textAlign = "right";
+    ctx.font = "bold 64px Inter";
+    ctx.fillText(
+      score,
+      canvas.width - 250,
+      1035
+    );
+
+    ctx.font = "36px Inter";
+    ctx.fillText(
+      "/10",
+      canvas.width - 170,
+      1035
+    );
+
+    /* =========================
+       3️⃣ CERT ID + DATE
+    ========================= */
+    ctx.textAlign = "left";
+    ctx.font = "26px monospace";
+    ctx.fillText(
+      `${shortID} • ${date}`,
+      390,   // сразу после "Certificate ID:"
+      1035
     );
   };
 }
